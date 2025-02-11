@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
   const { data: session } = useSession();
-  console.log("Session Data:", session); // ตรวจสอบค่าที่ได้รับ
+  console.log("Session Data2:", session); // ตรวจสอบค่าที่ได้รับ
 
   return (
     <div className="p-4 bg-gray-100 rounded-md shadow-md mt-4">

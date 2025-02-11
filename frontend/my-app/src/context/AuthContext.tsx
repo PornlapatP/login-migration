@@ -30,7 +30,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsLoading(false); // เปลี่ยนสถานะเป็นไม่โหลดแล้ว
+
   }, [session, status]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    // ตรวจสอบถ้าไม่มี token และไม่ได้อยู่หน้า login หรือ register
+    if (!token && router.pathname !== "/login" && router.pathname !== "/register") {
+      router.replace("/login"); // ถ้าไม่มี token ให้ redirect ไปหน้า login
+    }
+  }, [token, isLoading, router]);
 
   const login = (userToken: string) => {
     localStorage.setItem("token", userToken);
@@ -39,10 +49,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token"); // ลบ token จาก localStorage
-    setToken(null); // รีเซ็ตค่า token ใน AuthContext
-    signOut({ callbackUrl: "/login" }); // ทำการ sign out จาก next-auth และ redirect ไปที่หน้า login
+    localStorage.removeItem("token");
+    setToken(null);
+    signOut({ callbackUrl: "/login" }); // ทำการ sign out และ redirect ไปที่หน้า login
   };
+
   return (
     <AuthContext.Provider value={{ token, login, logout, isLoading }}>
       {children}

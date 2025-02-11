@@ -1,7 +1,6 @@
-// RegisterForm.tsx
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { register } from '../utils/api'; // คุณต้องสร้างฟังก์ชัน register
+import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext'; // ใช้ useAuth
+import { register } from '../utils/api'; // ฟังก์ชันสมัครสมาชิก
 import { useRouter } from 'next/router';
 
 const RegisterForm = () => {
@@ -9,8 +8,18 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login: loginUser } = useAuth();
+  const { token, isLoading, login: loginUser } = useAuth(); // ใช้ token และ isLoading จาก context
   const router = useRouter();
+
+  // ตรวจสอบ token หรือ session เมื่อเริ่มต้น
+  useEffect(() => {
+    if (isLoading) return; // ถ้ายังโหลดอยู่ ให้รอจนกว่า isLoading จะเป็น false
+
+    // ถ้ามี token แล้วให้ redirect ไปหน้า Home
+    if (token) {
+      router.replace('/'); // ไปหน้า Home
+    }
+  }, [isLoading, token, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +32,10 @@ const RegisterForm = () => {
       setError('สมัครสมาชิกไม่สำเร็จ');
     }
   };
+
+  if (isLoading) {
+    return <div>กำลังโหลด...</div>; // เมื่อกำลังโหลดไม่แสดง RegisterForm
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

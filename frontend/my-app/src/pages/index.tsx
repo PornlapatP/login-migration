@@ -1,35 +1,25 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Dashboard from "../components/Dashboard";
-import { useAuth } from "../context/AuthContext"; // ใช้ AuthContext เพื่อจัดการ session และ token
+import { useAuth } from "../context/AuthContext";
+import Navbar from "@/components/Navbar";
+import ProfilePage from "@/components/Profile";
+// import Dashboard from "../components/Dashboard";
+// import ProfilePage from "@/components/Profile";
 
 const HomePage = () => {
   const { token, isLoading, logout } = useAuth(); // ดึง token จาก context
-  const { data: session, status } = useSession(); // ใช้ useSession จาก next-auth
+  const { data: session, status } = useSession();
   const router = useRouter();
+  console.log("Session Data:", session);
+  console.log("Session Status:", status);
 
-  useEffect(() => {
-    if (status === "loading") return; // ถ้ากำลังโหลด session
-    if (!session?.accessToken && !token) {
-      router.push("/login"); // ถ้าไม่มี accessToken หรือ token ให้ไปหน้า login
-    }
-  }, [status, session, token, router]);
-
-  if (status === "loading" || isLoading) {
-    return <p>Loading...</p>; // ถ้า session กำลังโหลด
-  }
+  if (status === "loading") return <p>Loading...</p>;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold">Welcome to the Home Page</h1>
-      <Dashboard />
-      <button
-        onClick={logout}
-        className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 mt-4"
-      >
-        ออกจากระบบ
-      </button>
+      <Navbar />
+      <ProfilePage />
     </div>
   );
 };

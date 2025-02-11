@@ -12,35 +12,44 @@ const LoginForm = () => {
   const { login: loginUser } = useAuth();
   const router = useRouter();
   const { data: session, status } = useSession(); // ใช้ session จาก next-auth
-
+  // const { data: session } = useSession(); // ดึง session ที่ได้
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    try {
-      const data = await login(email, password); // เรียก API login
-      if (data?.token) {
-        loginUser(data.token); // ใช้ AuthContext เพื่อเก็บ token ลง localStorage
-        router.push("/"); // Redirect ไปหน้า Home เมื่อ login สำเร็จ
-      } else {
-        setError("ไม่มี token จาก API");
-      }
-    } catch (err) {
+  
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+  
+    if (result?.error) {
       setError("Invalid email or password");
     }
   };
+  
 
   const handleGoogleLogin = async () => {
     signIn("google", { callbackUrl: "/" });
   };
 
   // เมื่อ session ถูกอัพเดตจาก Google Login
+  // useEffect(() => {
+  //   if (session?.accessToken) {
+  //     loginUser(session.accessToken); // ใช้ AuthContext เพื่อเก็บ token
+  //     localStorage.setItem("token", session.accessToken); // เก็บ token ลง localStorage
+  //     router.push("/"); // Redirect ไปหน้า Home
+  //   }
+  // }, [session, loginUser, router]);
   useEffect(() => {
-    if (session?.accessToken) {
-      loginUser(session.accessToken); // ใช้ AuthContext เพื่อเก็บ token
-      localStorage.setItem("token", session.accessToken); // เก็บ token ลง localStorage
-      router.push("/"); // Redirect ไปหน้า Home
+    // const { data: session } = useSession(); // ใช้ useSession เพื่อติดตาม session เมื่อมันเปลี่ยนแปลง
+  
+    if (session?.user?.authToken) {
+      localStorage.setItem("token", session.user.authToken); // เก็บ token ลง localStorage
+      router.push("/"); // Redirect ไปหน้า Home เมื่อ login สำเร็จ
+    } else {
+      // setError("ไม่มี token จาก session");
     }
-  }, [session, loginUser, router]);
+  }, [session]); // ใช้ useEffect เพื่อให้ session ถูกตรวจสอบหลังจาก login
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
