@@ -21,3 +21,26 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+model Employee {
+  id        Int      @id @default(autoincrement()) // Primary key
+  fname     String   // First name
+  lname     String   // Last name
+  nname     String?  // Nickname (optional)
+  createdAt DateTime @default(now()) // Creation timestamp
+  updatedAt DateTime @updatedAt // Update timestamp
+  
+  // Foreign key example (assuming you have a department table)
+  departmentId Int? 
+  department   Department? @relation(fields: [departmentId], references: [id]) // Foreign key to Department table
+}
+
+model Department {
+  id        Int      @id @default(autoincrement()) // Primary key
+  name      String   // Department name
+  createdAt DateTime @default(now()) // Creation timestamp
+  updatedAt DateTime @updatedAt // Update timestamp
+
+  employees  Employee[] // Relation to employees
+}
