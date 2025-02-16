@@ -39,7 +39,7 @@ const EmployeeTable: React.FC = () => {
       const data = await fetchEmployees();
       setEmployees(data);
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Failed to fetch employees.");
     } finally {
       setLoading(false);
@@ -60,7 +60,7 @@ const EmployeeTable: React.FC = () => {
       setSelectedEmployee(null);
       setFormData({ fname: "", lname: "", nname: "", departmentId: 0 });
       loadEmployees();
-    } catch (err) {
+    } catch {
       setError("Failed to save employee.");
     }
   };
@@ -79,7 +79,7 @@ const EmployeeTable: React.FC = () => {
     try {
       await deleteEmployee(id);
       loadEmployees(); // โหลดข้อมูลใหม่หลังจากลบ
-    } catch (err) {
+    } catch {
       setError("Failed to delete employee.");
     }
   };

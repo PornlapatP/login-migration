@@ -75,13 +75,13 @@ exports.deleteEmployee = async (req, res) => {
   }
 };
 
-// Create new department
-exports.createDepartmentHandler = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const newDepartment = await employeeService.createDepartment(name);
-    res.status(201).json(newDepartment);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// // Create new department
+// exports.createDepartmentHandler = async (req, res) => {
+//   try {
+//     const { name } = req.body;
+//     const newDepartment = await employeeService.createDepartment(name);
+//     res.status(201).json(newDepartment);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };

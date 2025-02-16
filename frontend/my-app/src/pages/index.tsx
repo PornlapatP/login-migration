@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "@/components/Navbar";
-import EmployeeTable from "@/components/EmployeeTable";
+import EmployeeTable from "../components/EmployeeTable";
 
 const HomePage = () => {
   const { token, isLoading } = useAuth(); // ดึง token จาก context

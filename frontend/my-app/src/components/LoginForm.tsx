@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { login } from "../utils/api";
+// import { useAuth } from "../context/AuthContext";
+// import { login } from "../utils/api";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
@@ -9,10 +9,10 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login: loginUser } = useAuth();
+  // const { login: loginUser } = useAuth();
   const router = useRouter();
-  const { data: session, status } = useSession(); // ใช้ session จาก next-auth
-  // const { data: session } = useSession(); // ดึง session ที่ได้
+  // const { data: session, status } = useSession(); // ใช้ session จาก next-auth
+  const { data: session } = useSession(); // ดึง session ที่ได้
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -49,7 +49,7 @@ const LoginForm = () => {
     } else {
       // setError("ไม่มี token จาก session");
     }
-  }, [session]); // ใช้ useEffect เพื่อให้ session ถูกตรวจสอบหลังจาก login
+  }, [session,router]); // ใช้ useEffect เพื่อให้ session ถูกตรวจสอบหลังจาก login
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
