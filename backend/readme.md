@@ -1,6 +1,6 @@
 1. npm init -y
 2. ติดตั้ง Prisma CLI และ Client
-npm install prisma @prisma/client
+npm install prisma @prisma/client // @prisma/cli body-parser
 3. สร้าง Prisma schema
 npx prisma init
 4. change .env path connect database 
@@ -40,3 +40,6 @@ import bodyParser from 'body-parser'ต้องเพิ่ม
 หรือ 
 const express = require('express');
 แบบนี้ก็ได้
+
+// npm ci
+// npm install

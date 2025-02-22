@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.1
+    # container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567
+      POSTGRES_DB: mydatabase
+    ports:
+      - "4321:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: container-backend-only
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:1234567@postgres:5432/mydatabase
+    depends_on:
+      - postgres
+    ports:
+      - "3222:3222"
+
+volumes:
+  postgres_data:
